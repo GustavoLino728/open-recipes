@@ -32,7 +32,7 @@ Aplicação fullstack para busca e consulta de receitas culinárias baseada nos 
 ## 📊 Diagramas (Mermaid)
 
 <details>
-<summary><b>🏗️ Arquitetura Geral do Sistema</b></summary>
+<summary><b>🏗️ Arquitetura Geraal do Sistema</b></summary>
 
 ```mermaid
 flowchart LR
