@@ -1,3 +1,4 @@
+# backend/app/__init__.py
 from flask import Flask
 from flask_cors import CORS
 from app.config import Config
@@ -9,33 +10,27 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     
-    # Configurar CORS
-    CORS(app, resources={
-        r"/api/*": {
-            "origins": Config.CORS_ORIGINS,
-            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization"]
-        }
-    })
+    CORS(app, 
+         resources={r"/api/*": {"origins": "*"}},
+         supports_credentials=False,
+         allow_headers=["Content-Type", "Authorization"],
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    )
     
-    # Registrar blueprints
     app.register_blueprint(receitas_bp)
     
-    # Rota raiz
     @app.route('/')
     def index():
         return {
             'message': 'API Backend - Receitas App',
-            'status': 'running',
-            'endpoints': {
-                'health': '/api/receitas/health',
-                'todas': '/api/receitas/todas',
-                'buscar': '/api/receitas/buscar',
-                'filtrar': '/api/receitas/filtrar',
-                'por_id': '/api/receitas/<id>',
-                'por_tipo': '/api/receitas/tipo/<tipo>',
-                'ingredientes': '/api/receitas/<id>/ingredientes'
-            }
+            'status': 'running'
         }
+    
+    @app.after_request
+    def after_request(response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        return response
     
     return app

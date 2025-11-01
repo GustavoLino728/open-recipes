@@ -1,4 +1,3 @@
-# backend/app/services/api_service.py
 import requests
 from typing import Dict, Optional, List
 from app.config import Config
